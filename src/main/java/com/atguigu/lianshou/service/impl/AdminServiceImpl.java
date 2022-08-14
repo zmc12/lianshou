@@ -21,7 +21,7 @@ public class AdminServiceImpl extends ServiceImpl<AdminMapper, Admin> implements
     public Admin login(LoginForm loginForm) {
 
         QueryWrapper<Admin> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("name",loginForm.getUserName());
+        queryWrapper.eq("name",loginForm.getUsername());
         queryWrapper.eq("password", MD5.encrypt(loginForm.getPassword()));
 
         return baseMapper.selectOne(queryWrapper);

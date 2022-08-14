@@ -18,7 +18,7 @@ public class TeacherServiceImpl extends ServiceImpl<TeacherMapper, Teacher> impl
     @Override
     public Teacher login(LoginForm loginForm) {
         QueryWrapper<Teacher> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("name",loginForm.getUserName());
+        queryWrapper.eq("name",loginForm.getUsername());
         queryWrapper.eq("password", MD5.encrypt(loginForm.getPassword()));
 
         return baseMapper.selectOne(queryWrapper);

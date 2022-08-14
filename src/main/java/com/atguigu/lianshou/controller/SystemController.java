@@ -10,9 +10,6 @@ import com.atguigu.lianshou.service.TeacherService;
 import com.atguigu.lianshou.util.CreateVerifiCodeImage;
 import com.atguigu.lianshou.util.JwtHelper;
 import com.atguigu.lianshou.util.Result;
-import com.atguigu.lianshou.util.ResultCodeEnum;
-import com.sun.deploy.net.HttpResponse;
-import net.bytebuddy.implementation.bytecode.Throw;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -45,16 +42,18 @@ public class SystemController {
 
     @PostMapping(value = "/login")
     public Result login(@RequestBody LoginForm loginForm, HttpServletRequest request) {
+
+
         HttpSession session = request.getSession();
         String sessionVerifiCode = (String) session.getAttribute("verifiCode");
         String verifiCode = loginForm.getVerifiCode();
 
         if ("".equals(sessionVerifiCode) || null == sessionVerifiCode) {
-            Result.fail("验证码为空");
+            return Result.fail().message("验证码为空");
         }
 
         if (!sessionVerifiCode.equalsIgnoreCase(verifiCode)) {
-            Result.fail("验证码错误");
+            return Result.fail().message("验证码错误");
         }
         session.removeAttribute("verifiCode");
 
@@ -62,8 +61,8 @@ public class SystemController {
         LinkedHashMap<String, Object> map = new LinkedHashMap<>();
         switch (loginForm.getUserType()){
             case 1:
-                Admin admin = adminService.login(loginForm);
                 try {
+                    Admin admin = adminService.login(loginForm);
                     if(null != admin){
                         Long id = admin.getId().longValue();
                         String token = JwtHelper.createToken(id, 1);
@@ -79,8 +78,9 @@ public class SystemController {
                     return Result.fail().message(e.getMessage());
                 }
             case 2:
-                Student student = studentService.login(loginForm);
+
                 try {
+                    Student student = studentService.login(loginForm);
                     if(null != student){
                         Long id = student.getId().longValue();
                         String token = JwtHelper.createToken(id, 2);
@@ -96,8 +96,8 @@ public class SystemController {
                     return Result.fail().message(e.getMessage());
                 }
             case 3:
-                Teacher teacher = teacherService.login(loginForm);
                 try {
+                    Teacher teacher = teacherService.login(loginForm);
                     if(null != teacher){
                         Long id = teacher.getId().longValue();
                         String token = JwtHelper.createToken(id, 3);
