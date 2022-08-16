@@ -1,6 +1,5 @@
 package com.atguigu.lianshou.service;
 
-import com.atguigu.lianshou.pojo.Admin;
 import com.atguigu.lianshou.pojo.LoginForm;
 import com.atguigu.lianshou.pojo.Student;
 import com.baomidou.mybatisplus.extension.service.IService;
@@ -11,4 +10,8 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface StudentService extends IService<Student> {
     Student login(LoginForm loginForm);
+
+    Student getStudentById(Long userId);
+
+
 }

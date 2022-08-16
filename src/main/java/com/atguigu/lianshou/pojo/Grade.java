@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
 @TableName(value = "tb_grade")
 public class Grade {
 
-    private Integer id;
+    private int id;
     private String name;
     private String manager;
     private String email;

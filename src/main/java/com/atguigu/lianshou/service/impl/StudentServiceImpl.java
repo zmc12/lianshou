@@ -1,14 +1,18 @@
 package com.atguigu.lianshou.service.impl;
 
 import com.atguigu.lianshou.mapper.StudentMapper;
+import com.atguigu.lianshou.pojo.Grade;
 import com.atguigu.lianshou.pojo.LoginForm;
 import com.atguigu.lianshou.pojo.Student;
 import com.atguigu.lianshou.service.StudentService;
 import com.atguigu.lianshou.util.MD5;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.thymeleaf.util.StringUtils;
 
 /**
  * @Author: ZhangMinCong
@@ -25,4 +29,12 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> impl
 
         return baseMapper.selectOne(queryWrapper);
     }
+
+    @Override
+    public Student getStudentById(Long userId) {
+        QueryWrapper<Student> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("id",userId);
+        return baseMapper.selectOne(queryWrapper);
+    }
+
 }

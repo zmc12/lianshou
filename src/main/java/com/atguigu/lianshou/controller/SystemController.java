@@ -10,6 +10,7 @@ import com.atguigu.lianshou.service.TeacherService;
 import com.atguigu.lianshou.util.CreateVerifiCodeImage;
 import com.atguigu.lianshou.util.JwtHelper;
 import com.atguigu.lianshou.util.Result;
+import com.atguigu.lianshou.util.ResultCodeEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,6 +20,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 
 /**
@@ -38,6 +40,37 @@ public class SystemController {
 
     @Autowired
     private TeacherService teacherService;
+
+    @GetMapping(value = "/getInfo")
+    public Result getInfo(@RequestHeader("token") String token){
+        if(JwtHelper.isExpiration(token)){
+            return Result.build(null, ResultCodeEnum.TOKEN_ERROR);
+        }
+        Long userId = JwtHelper.getUserId(token);
+        Integer userType = JwtHelper.getUserType(token);
+
+        HashMap<String, Object> map = new HashMap<>();
+        switch (userType){
+            case 1:
+                Admin admin = adminService.getAdminById(userId);
+                map.put("userType",1);
+                map.put("user",admin);
+                break;
+            case 2:
+                Student student = studentService.getStudentById(userId);
+                map.put("userType",2);
+                map.put("user",student);
+                break;
+            case 3:
+                Teacher teacher = teacherService.getTeacherById(userId);
+                map.put("userType",3);
+                map.put("user",teacher);
+                break;
+        }
+
+
+        return Result.ok(map);
+    }
 
 
     @PostMapping(value = "/login")

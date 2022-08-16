@@ -21,7 +21,7 @@ public class Teacher {
     private String gender;
     private String password;
     private String email;
-    private Integer telephone;
+    private Long telephone;
     private String address;
     private String portraitPath;
     private String clazzName;

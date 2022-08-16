@@ -21,7 +21,7 @@ public class Student {
     private char gender;
     private String password;
     private String email;
-    private Integer telephone;
+    private Long telephone;
     private String address;
     private String clazzName;
 }
