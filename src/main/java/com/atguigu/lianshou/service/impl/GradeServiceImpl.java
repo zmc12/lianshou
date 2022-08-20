@@ -11,6 +11,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.thymeleaf.util.StringUtils;
 
+import java.util.List;
+
 /**
  * @Author: ZhangMinCong
  * @Date: 2022/8/12 20:01
@@ -28,5 +30,12 @@ public class GradeServiceImpl extends ServiceImpl<GradeMapper, Grade> implements
         Page<Grade> page1 = baseMapper.selectPage(page, gradeQueryWrapper);
 
         return page1;
+    }
+
+    @Override
+    public List<Grade> getGrades() {
+
+        return baseMapper.selectList(null);
+
     }
 }

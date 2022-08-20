@@ -1,7 +1,6 @@
 package com.atguigu.lianshou.service.impl;
 
 import com.atguigu.lianshou.mapper.StudentMapper;
-import com.atguigu.lianshou.pojo.Grade;
 import com.atguigu.lianshou.pojo.LoginForm;
 import com.atguigu.lianshou.pojo.Student;
 import com.atguigu.lianshou.service.StudentService;
@@ -35,6 +34,22 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> impl
         QueryWrapper<Student> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("id",userId);
         return baseMapper.selectOne(queryWrapper);
+    }
+
+    @Override
+    public IPage<Student> getStudentByOpr(Page<Student> page, Student student) {
+
+        QueryWrapper<Student> queryWrapper = new QueryWrapper<>();
+        String name = student.getName();
+        if(!StringUtils.isEmpty(name)){
+            queryWrapper.like("name",name);
+        }
+        String clazzName = student.getClazzName();
+        if(!StringUtils.isEmpty(clazzName)){
+            queryWrapper.like("clazz_name",clazzName);
+        }
+        queryWrapper.orderByDesc("id");
+        return baseMapper.selectPage(page,queryWrapper);
     }
 
 }

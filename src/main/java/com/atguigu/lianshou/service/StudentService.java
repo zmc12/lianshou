@@ -2,6 +2,8 @@ package com.atguigu.lianshou.service;
 
 import com.atguigu.lianshou.pojo.LoginForm;
 import com.atguigu.lianshou.pojo.Student;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 /**
@@ -14,4 +16,5 @@ public interface StudentService extends IService<Student> {
     Student getStudentById(Long userId);
 
 
+    IPage<Student> getStudentByOpr(Page<Student> page, Student student);
 }

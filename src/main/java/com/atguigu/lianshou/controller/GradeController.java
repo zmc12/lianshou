@@ -22,6 +22,15 @@ public class GradeController {
     @Autowired
     private GradeService gradeService;
 
+
+
+    @GetMapping(value = "/getGrades")
+    public Result getGrades(){
+
+        List<Grade> list = gradeService.getGrades();
+        return Result.ok(list);
+    }
+
     @DeleteMapping(value = "/deleteGrade")
     public Result deleteGrade(@RequestBody List<Integer> ids){
 

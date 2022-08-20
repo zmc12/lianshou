@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
 @TableName(value = "tb_clazz")
 public class Clazz {
 
-    private Integer id;
+    private int id;
     private String name;
     private Integer number;
     private String introducation;
