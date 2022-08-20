@@ -13,15 +13,18 @@ import com.atguigu.lianshou.util.Result;
 import com.atguigu.lianshou.util.ResultCodeEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.UUID;
 
 /**
  * @Author: ZhangMinCong
@@ -40,6 +43,25 @@ public class SystemController {
 
     @Autowired
     private TeacherService teacherService;
+
+
+    @PostMapping(value = "/headerImgUpload")
+    public Result headerImgUpload(@RequestPart("multipartFile")MultipartFile multipartFile){
+        String uuid = UUID.randomUUID().toString().replace("-", "").toLowerCase();
+        String originalFilename = multipartFile.getOriginalFilename();
+        int i = originalFilename.lastIndexOf(".");
+        String newFilename = uuid+originalFilename.substring(i);
+
+        String portPath = "D:/idea/project/project/lianshou/target/classes/public/upload/"+newFilename;
+        try {
+            multipartFile.transferTo(new File(portPath));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        String path = "upload/"+newFilename;
+        return Result.ok(path);
+    }
 
     @GetMapping(value = "/getInfo")
     public Result getInfo(@RequestHeader("token") String token){
@@ -115,8 +137,7 @@ public class SystemController {
                 try {
                     Student student = studentService.login(loginForm);
                     if(null != student){
-                        Long id = student.getId().longValue();
-                        String token = JwtHelper.createToken(id, 2);
+                        Long id = ((Integer)student.getId()).longValue();                        String token = JwtHelper.createToken(id, 2);
                         map.put("token",token);
 
                     }else {
@@ -132,7 +153,7 @@ public class SystemController {
                 try {
                     Teacher teacher = teacherService.login(loginForm);
                     if(null != teacher){
-                        Long id = teacher.getId().longValue();
+                        Long id = ((Integer)teacher.getId()).longValue();
                         String token = JwtHelper.createToken(id, 3);
                         map.put("token",token);
 

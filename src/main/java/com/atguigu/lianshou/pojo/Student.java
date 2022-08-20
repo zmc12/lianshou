@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
 @TableName(value = "tb_student")
 public class Student {
 
-    private Integer id;
+    private int id;
     private Integer sno;
     private String name;
     private char gender;
@@ -23,5 +23,7 @@ public class Student {
     private String email;
     private Long telephone;
     private String address;
+    private String introducation;
+    private String portraitPath;
     private String clazzName;
 }
