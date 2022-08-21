@@ -16,7 +16,7 @@ import lombok.NoArgsConstructor;
 @TableName(value = "tb_admin")
 public class Admin {
 
-    private Integer id;
+    private int id;
     private String name;
     private char gender;
     private String password;

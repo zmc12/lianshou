@@ -9,6 +9,8 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 /**
  * @Author: ZhangMinCong
  * @Date: 2022/8/14 14:10
@@ -19,6 +21,12 @@ public class StudentController {
 
     @Autowired
     private StudentService studentService;
+
+    @DeleteMapping("/delStudentById")
+    public Result delStudentById(@RequestBody List<Integer> ids){
+        studentService.removeByIds(ids);
+        return Result.ok();
+    }
 
 
     @PostMapping(value = "/addOrUpdateStudent")

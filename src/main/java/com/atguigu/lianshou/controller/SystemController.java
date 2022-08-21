@@ -119,7 +119,7 @@ public class SystemController {
                 try {
                     Admin admin = adminService.login(loginForm);
                     if(null != admin){
-                        Long id = admin.getId().longValue();
+                        Long id = ((Integer)admin.getId()).longValue();
                         String token = JwtHelper.createToken(id, 1);
                         map.put("token",token);
 
