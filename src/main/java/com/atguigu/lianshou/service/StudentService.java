@@ -17,4 +17,6 @@ public interface StudentService extends IService<Student> {
 
 
     IPage<Student> getStudentByOpr(Page<Student> page, Student student);
+
+    Student selectByPwd(Long userId, String oldPwd);
 }

@@ -7,10 +7,7 @@ import com.atguigu.lianshou.pojo.Teacher;
 import com.atguigu.lianshou.service.AdminService;
 import com.atguigu.lianshou.service.StudentService;
 import com.atguigu.lianshou.service.TeacherService;
-import com.atguigu.lianshou.util.CreateVerifiCodeImage;
-import com.atguigu.lianshou.util.JwtHelper;
-import com.atguigu.lianshou.util.Result;
-import com.atguigu.lianshou.util.ResultCodeEnum;
+import com.atguigu.lianshou.util.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -43,6 +40,51 @@ public class SystemController {
 
     @Autowired
     private TeacherService teacherService;
+
+    @PostMapping("/updatePwd/{oldPwd}/{newPwd}")
+    public Result updatePwd(@PathVariable("oldPwd")String oldPwd,@PathVariable("newPwd")String newPwd,@RequestHeader("token")String token){
+        boolean expiration = JwtHelper.isExpiration(token);
+        if(expiration){
+            return Result.fail().message("登陆超时，请重新登陆");
+        }
+        Long userId = JwtHelper.getUserId(token);
+        Integer userType = JwtHelper.getUserType(token);
+
+        oldPwd = MD5.encrypt(oldPwd);
+        newPwd = MD5.encrypt(newPwd);
+
+        switch (userType){
+            case 1:
+                Admin admin = adminService.selectByPwd(userId,oldPwd);
+                if(admin != null){
+                    admin.setPassword(newPwd);
+                    adminService.saveOrUpdate(admin);
+                }else {
+                    return Result.fail().message("密码输入错误");
+                }
+                break;
+            case 2:
+                Student student = studentService.selectByPwd(userId,oldPwd);
+                if(student != null){
+                    student.setPassword(newPwd);
+                    studentService.saveOrUpdate(student);
+                }else {
+                    return Result.fail().message("密码输入错误");
+                }
+                break;
+            case 3:
+                Teacher teacher = teacherService.selectByPwd(userId,oldPwd);
+                if(teacher != null){
+                    teacher.setPassword(newPwd);
+                    teacherService.saveOrUpdate(teacher);
+                }else {
+                    return Result.fail().message("密码输入错误");
+                }
+                break;
+        }
+
+        return Result.ok();
+    }
 
 
     @PostMapping(value = "/headerImgUpload")

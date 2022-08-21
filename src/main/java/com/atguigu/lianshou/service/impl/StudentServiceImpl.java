@@ -52,4 +52,12 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> impl
         return baseMapper.selectPage(page,queryWrapper);
     }
 
+    @Override
+    public Student selectByPwd(Long userId, String oldPwd) {
+        QueryWrapper<Student> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("id",userId.intValue());
+        queryWrapper.eq("password",oldPwd);
+        return this.getOne(queryWrapper);
+    }
+
 }
